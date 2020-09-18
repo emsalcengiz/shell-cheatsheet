@@ -136,14 +136,203 @@ pipe soldaki komutun çıktısını alıp sağa gönderiyor.
 # Jokerler
 
 Komutlarda birden fazla dosya ismi verirsek birden fazla dosya üstüne çalışır. Bütün dosyaların hepsini tek tek yazmaktansa * operatörünü kullanırız.
-```cut -d , -f 1 directory/*.csv
-cut -d , -f 1 directory/ka*.csv:``` Klasörde kalem.csv ve kagit.csv isimli iki tane csv dosyası olsun, ikisini de seçmek için
 
-```?``` tek bir karakteri eşliyor, mesela 201?.txt 2017.txt ve 2018.txt’yi eşliyor, ama 2017-01.txt’yi eşlemiyor.
+        cut -d , -f 1 directory/*.csv
+        cut -d , -f 1 directory/ka*.csv: Klasörde kalem.csv ve kagit.csv isimli iki tane csv dosyası olsun, ikisini de seçmek için
 
-```[…]:``` köşeli parantezin içindeki bir karakteri eşler, mesela 201[78].txt 2017.txt ya da 2018.txt’yi eşler.
+        ? tek bir karakteri eşliyor, mesela 201?.txt 2017.txt ve 2018.txt’yi eşliyor, ama 2017-01.txt’yi eşlemiyor.
 
-```{…}:``` {*.txt, *.csv} .txt ya da .csv’yle biten dosyaları eşler.
+        […]: köşeli parantezin içindeki bir karakteri eşler, mesela 201[78].txt 2017.txt ya da 2018.txt’yi eşler.
+
+        {…}:  {*.txt, *.csv} .txt ya da .csv’yle biten dosyaları eşler.
+
+
+# Sıralama Yapmak
+
+```sort``` komutuyla yapılabilir. 
+
+```-n flag’i:```  numerik olarak sıralar -r: tersten sıralar -b: boşlukları yok saymamızı sağlar -f: büyük/küçük harfi yok saymamızı sağlar (folding)
+
+örnek: ```cut -d , -f 2 directory/dosya.csv | grep -v "anahtar_kelime" | sort -r:``` aramayı tersten sıralar
+
+```uniq:``` çift yazılmış satırları siler
+
+```cut -d , -f 2 directory/dosya.csv | grep -v "anahtar_kelime" | sort | uniq -c:``` ikinci kolonu al, içinde anahtar_kelime geçmeyen çıktıları al, hepsini sırala, her eşleşme bir kez çıkacak şekilde göster ve kaç kez gözüktüğü yazsın.
+
+
+# Dosya İzinleri
+
+Bazen kullandığımız dosyalar üzerinde yeterli iznimiz olmayabilir, veya önemli dosyaların başkaları tarafından okunup yazılmasını istemeyebiliriz. Böyle durumlarda dosya izinlerini kullanabiliriz.
+
+```chmod :``` komutu ile yapılabilir
+
+chmod sekizlik(octal) sayı sistemi kullanır, bu sistemde read izni 4, write izni 2, execute izni ise 1 sayısı ile gösterilir.
+
+bir sistemde ise temel olarak 3 kullanıcı vardır, bunlar sırasıyla
+
+-owner dosyanın sahibi
+-group bilgisayar üzerinde kayıtlı olan kullanıcılar
+-other geri kalan herkes
+
+örnek: ```chmod 644 file.txt :``` bu komut sonrasında file.txt'yi dosyanın sahibi okuyabilir/yazabilir. bilgisayar üzerinde kayıtlı olan kullanıcılar ve geri kalan herkes bu dosyayı sadece okuyabilir.
+
+buradaki 6 sayısı dosya sahibinin iznini, 4 sayısı bilgisayar üzerinde kayıtlı olan kullanıcıların iznini ve diğer 4 sayısı ise geri kalan herkesin iznini temsil eder.
+
+izinleri hesaplamak basittir. mesela dosya sahibine okuma ve yazma izni vermek için 4+2=6, okuma ve çalıştırma izni vermek için ise 4+1, yani 5 yazabiliriz. hiçbir izin vermek istemiyorsak 0 yazabiliriz. sıralama ise daima owner-group-other şeklindedir.
+
+# Sistem Bilgisi
+
+```who:``` Oturum açmış kullanıcıları listeler.
+
+```lsusb:``` USB aygıtları listeler. USB ile takılan aygıtın tanınıp tanınmadığını anlamaya yarıyor.
+
+```dmesg:``` Sistem yeni bir donanım tespit ettiğini ya da bir donanımın bağlantısının kesildiğini farkettiğinde oluşturduğu mesajları görmemizi sağlar. Bu sayede bir donanımın bağlı olup olmadığını anlayabiliriz.
+
+```lsblk:``` Sistemde ki diskleri ve partitionları gösterir.
+
+```lsb_release -a:``` Mevcut GNU/Linux dağıtımı hakkında bilgi verir.(Debian tabanlılarda test ettim).
+
+```uname -a:``` Sistem ve çekirdek hakkında bilgi verir.
+
+```free:``` RAM kullanımı ve durumu ile ilgili bilgi verir.
+
+```du ./:``` Verilen dizin içinde bulunan dosyaları ve boyutlarını listeliyor.
+
+```tree ./:``` Verilen dizini ağaç yapısı şeklinde listeler. İşe yarar.
+
+```history:``` Kullanıcının komut geçmişini ortaya döker. Bu kayıtlar genelde home dizini altında eğer kullanılan shell bash ise home dizini altında .bash_history dosyasında tutulur.
+
+```top:``` Terminal içinde görev yöneticisi. Kardeşi htop daha renkli ve daha fazla özelliğe sahip ama indirmek gerekiyor.
+
+```kill:``` Processlere sinyal göndermeye yarar. Mesela kilitlenen bir işlem varsa örneğin Firefox, PID numarası tespit edildikten sonra kill -9 PID_Numarası yazılarak Firefox'a SIGKILL gönderilebilir. Bu da Firefox'u kapatacaktır.
+
+
+# Ağ
+
+```ip a :``` Sistemde varolan tüm interface bilgilerini numaralandırarak ekrana basar.
+
+```ifconfig:``` Ağ arayüzleri hakkında bilgi verir. Sistemde ki ağ kartlarının MAC ve IP adreslerini bulmakta yardımcı oluyor.
+
+```ping:``` Parametre olarak girilen adrese ICMP paketleri atar. Windows' dan farklı olarak GNU/Linux sürümünde eğer müdahale edilmez ise sonsuza kadar ping atmaya devam eder. Windows' da yanılmıyorsam 3 tane atıp kendini durduruyor.
+
+```netstat -antup:``` Kullanımda olan portları listeler. LISTEN olanlara dikkat edilmesi iyi olur.
+
+```route:``` Sistemdeki yönlendirme tablosunu listeleme ve yönetme işlemlerini yapar. Host üzerinde tanımlı olan bir arayüz üzerinden belirtilmiş hedeflere static yönlendirme yapar.
+
+```tcpdump:``` Sisteme gelen network trafigini incelemeye yarar.
+
+örnek: ```tcpdump -i eth0 :``` Belirtilen arayüzün dinlenmesini sağlar. Gelen network paketlerini ekrana yazdırır...
+
+
+# Bash Söz Dizimi
+
+# Değişkenler
+
+degisken=1 veya degisken="yazı" şeklinde değişken tanımlaması yapılır, boşlukla değişken tanımlanması halinde hata alırsınız.
+
+DEGISKEN=1 veya DEGISKEN="yazı" bu şekilde global değişken tanımlayabilirsiniz. Kodlarınızın herhangi bir yerine;
+
+```export DEGISKEN``` 
+yazdıktan sonra birbirini tetikleyen scriptler yazmanız halinde dosyalar arası değişkenlerinizi kullanabilirsiniz.
+
+# Değişkenleri Yazdırmak
+
+ad="Göksel"
+echo $ad
+
+> Göksel
+echo ad
+> ad
+echo '$ad'
+> $ad
+
+
+# Cümle İçinde Yazdırmak
+
+echo "Selam Benim Adım, $ad"
+
+
+# Bilinmesi Gereken Bazı Değişkenler
+
+$#: Komut dosyasına kaç komut satırı parametresi geçirildi.
+$@: Komut satırı parametrelerine iletilen tüm komut satırı parametreleri.
+$?: Çalıştırılacak son işlemin çıkış durumu.
+$$: Geçerli komut dosyasının İşlem Kimliği (PID).
+$USER: Betiği çalıştıran kullanıcının kullanıcı adı.
+$HOSTNAME: Komut dosyasını çalıştıran bilgisayarın ana bilgisayar adı.
+$SECONDS: Betiğin çalıştığı saniye sayısı.
+$RANDOM: Rastgele bir sayı döndürür.
+$LINENO: Komut dosyasının geçerli satır numarasını döndürür.
+$PATH: PATH değişkeninde bir komut yazıldığı anda sistem tarafından aranacak olan patika listesi görüntülenir.
+
+
+# Aritmetik İşlemler
+
+let "a=2+3" # +(toplama), -(çıkarma), *(çarpma), /(bölme)
+echo $a
+> 5
+
+
+# Aritmetik Kıyaslamalar
+
+-gt büyük
+-lt küçük
+-ge büyük eşit
+-le küçük eşit
+-eq eşit
+-ne eşit değil
+
+sayi=2
+[ $sayi -eq 3 ]
+echo $?
+> 0
+[ $sayi -lt 2 ]
+echo $?
+>1
+
+
+# If Kullanımı
+
+#!/bin/bash
+sayi=3
+
+if [ $sayi -eq 3]; then  
+# == da kullanabilirsiniz.
+  echo Sayı eşit
+else
+  echo Sayı eşit değil
+fi
+
+> Sayı eşit
+
+
+# While Kullanımı
+
+#!/bin/bash
+sayi=2
+while [ $sayi -lt 100 ]
+   do
+        deger=$((deger+2))
+        echo $sayi
+   done
+   
+Yukarıda görmüş olduğunuz $() kullanımı terminalde dönen çıktı anlamına gelir.
+Örneğin; 
+        $ pwd
+        > /user/omerayyildiz/Desktop
+        $ masaustuYolu=$(pwd)
+        $ echo $masaustuYolu
+        > /user/omerayyildiz/Desktop
+        
+# For-Do Kullanımı
+
+#!/bin/bash
+for element in Hydrogen Helium Lithium Beryllium
+   do
+       echo $element
+    done
+>Hydrogen Helium Lithium Beryllium
+        
 
 
 
