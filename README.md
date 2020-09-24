@@ -26,6 +26,8 @@ shell komutlarının türkçe açıklamalarını içerir
 ```cp klasör/dosya.csv backup/dosya.bck:```  "klasör" dizinindeki "dosya.csv" dosyasını, "backup" dizinine "dosya.bck" dosya ismiyle kopyalar.
 ```cp dosya1.txt dosya2.txt backup:```  Belirtilen iki dosyayı ("dosya1.txt" ve "dosya2.txt") aynı isimle "backup" dizinine kopyalar.
 
+```cp -r kopyalanacak_klasör kopyalanacak_path```: A pathinde bulununan ve içinde dosyalar olan klasörü B pathine kopyalamayı sağlar.
+
 ```dd:```  Dosya kopyalama ve dönüştürme yapar.Örneğin dd if=/dev/sda of=./disk.img ile /dev/sda diskinin tamamının imajını .img dosyası olarak alabilirsiniz.
 
 ```mv:```  Dosyaları taşımak ya da yeniden adlandırmak için kullanılan komut (move)
