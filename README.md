@@ -351,7 +351,7 @@ Belli işlemleri kısayol ile hızlıca açmak için araştırma yaparken. Aklı
 Benim `env` oluşturmak, aktif ve deaktif etmek için kullandığım fonksiyon (daha gelişmişleride bulunmakta):
 
 ```bash
-````
+
 
 # Virtualenv Neden Kullanıyoruz?
 izole python ortamları oluşturmak için kullanılan bir araçtır. Virtualenv ile oluşturtuğun klasörde yaptığın herhangi bir değişiklik, kurduğun paketler, sildiğin paketler diğer virtualenv ortamlarını etkilemez, ve en önemlisi bence , senin gerçek sistemini etkilemeyior. Eğer sanal ortamda farklı bir işletim sistemi kullandıysanız, virtualenv’yi de python’un sanal ortamı gibi düşünebilirsiniz.
