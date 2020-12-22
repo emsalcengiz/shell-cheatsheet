@@ -384,7 +384,7 @@ Bu fonksiyonu `.bashrc` dosyasının içine yapıştırdıktan sonra aşağıdak
 
 Terminalde venv ile istediğim komutu kullanabiliyorum. 
 
-Teşekkürler Linux :) (Büyük ihtimalle Windows' un kendisinde de vardır.)
+Teşekkürler Linux :) (Büyük ihtimalle Windows' un kendisinde de vardır.) ![Alt Text](https://res.cloudinary.com/practicaldev/image/fetch/s--4RkRuwpj--/c_limit,f_auto,fl_progressive,q_auto,w_100/https://dev-to-uploads.s3.amazonaws.com/i/wmv3mtusjwb3r13d5h2f.png)
 
 
 
